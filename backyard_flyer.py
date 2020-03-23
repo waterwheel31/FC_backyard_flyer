@@ -48,23 +48,12 @@ class BackyardFlyer(Drone):
 
             north_t, east_t  = self.target_position[0], self.target_position[1]
 
-            if north_t == 10.0 and east_t == 0.0: 
-                self.target_position[0] = 10.0
-                self.target_position[1] = 10.0
-                self.waypoint_transition()
-            elif north_t == 10.0 and east_t == 10.0: 
-                self.target_position[0] = 0.0
-                self.target_position[1] = 10.0
-                self.waypoint_transition()
-            elif north_t == 0.0 and east_t == 10.0: 
-                self.target_position[0] = 0.0
-                self.target_position[1] = 0.0
-                self.waypoint_transition()
-            elif north_t == 0.0 and east_t == 0.0: 
-
+            if north_t == 0.0 and east_t == 0.0: 
                 self.landing_transition()
+            else: self.calculate_box()
 
-
+        if self.flight_state == States.LANDING and self.local_position[2]*-1 < self.torrelance_p:
+            self.disarming_transition()
 
     def velocity_callback(self):
         
@@ -89,7 +78,20 @@ class BackyardFlyer(Drone):
 
     def calculate_box(self):
         
-        pass
+        north_t, east_t  = self.target_position[0], self.target_position[1]
+
+        if north_t == 10.0 and east_t == 0.0: 
+            self.target_position[0] = 10.0
+            self.target_position[1] = 10.0
+            self.waypoint_transition()
+        elif north_t == 10.0 and east_t == 10.0: 
+            self.target_position[0] = 0.0
+            self.target_position[1] = 10.0
+            self.waypoint_transition()
+        elif north_t == 0.0 and east_t == 10.0: 
+            self.target_position[0] = 0.0
+            self.target_position[1] = 0.0
+            self.waypoint_transition()
 
     def arming_transition(self):
         
