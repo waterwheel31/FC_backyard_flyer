@@ -10,6 +10,7 @@
 ## Approach
 
 - This uses [UdaciDrone API](https://udacity.github.io/udacidrone/) to control the drone
+- Set next target location to move to, and after confirming the location is close to the target location (the gap of x, y, z is smaller than accepted distance), set the next target location
 
 ## Result
 

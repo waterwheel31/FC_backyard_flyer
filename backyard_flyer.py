@@ -5,7 +5,7 @@ from enum import Enum
 import numpy as np
 
 from udacidrone import Drone
-from udacidrone.connection import MavlinkConnection, WebSocketConnection  # noqa: F401
+from udacidrone.connection import MavlinkConnection, WebSocketConnection  
 from udacidrone.messaging import MsgID
 
 
@@ -32,17 +32,12 @@ class BackyardFlyer(Drone):
         # initial state
         self.flight_state = States.MANUAL
 
-        # TODO: Register all your callbacks here
         self.register_callback(MsgID.LOCAL_POSITION, self.local_position_callback)
         self.register_callback(MsgID.LOCAL_VELOCITY, self.velocity_callback)
         self.register_callback(MsgID.STATE, self.state_callback)
 
     def local_position_callback(self):
-        """
-        TODO: Implement this method
-
-        This triggers when `MsgID.LOCAL_POSITION` is received and self.local_position contains new data
-        """
+        
         print('local position:', self.local_position)
         
         if abs(self.local_position[0] - self.target_position[0]) < self.torrelance_p and \
@@ -72,20 +67,12 @@ class BackyardFlyer(Drone):
 
 
     def velocity_callback(self):
-        """
-        TODO: Implement this method
-
-        This triggers when `MsgID.LOCAL_VELOCITY` is received and self.local_velocity contains new data
-        """
+        
         if self.flight_state == States.LANDING:
             self.disarming_transition()
 
     def state_callback(self):
-        """
-        TODO: Implement this method
-
-        This triggers when `MsgID.STATE` is received and self.armed and self.guided contain new data
-        """
+        
         if not self.in_mission:
             return 
 
@@ -101,21 +88,11 @@ class BackyardFlyer(Drone):
             self.manual_transition()
 
     def calculate_box(self):
-        """TODO: Fill out this method
         
-        1. Return waypoints to fly a box
-        """
         pass
 
     def arming_transition(self):
-        """TODO: Fill out this method
         
-        1. Take control of the drone
-        2. Pass an arming command
-        3. Set the home location to current position
-        4. Transition to the ARMING state
-        """
-
         self.take_control()
         self.arm()
         self.flight_state = States.ARMING
@@ -123,12 +100,6 @@ class BackyardFlyer(Drone):
         print("arming transition")
 
     def takeoff_transition(self):
-        """TODO: Fill out this method
-        
-        1. Set target_position altitude to 3.0m
-        2. Command a takeoff to 3.0m
-        3. Transition to the TAKEOFF state
-        """
 
         self.target_position[2] = 3.0
         self.takeoff(3.0)
@@ -137,47 +108,27 @@ class BackyardFlyer(Drone):
         print("takeoff transition")
 
     def waypoint_transition(self):
-        """TODO: Fill out this method
-    
-        1. Command the next waypoint position
-        2. Transition to WAYPOINT state
-        """
-
+      
         self.cmd_position(*(self.target_position),0 )
         self.flight_state = States.WAYPOINT
 
         print("waypoint transition")
 
     def landing_transition(self):
-        """TODO: Fill out this method
-        
-        1. Command the drone to land
-        2. Transition to the LANDING state
-        """
-        
+       
         self.land()
         self.flight_state = States.LANDING
         print("landing transition")
 
     def disarming_transition(self):
-        """TODO: Fill out this method
-        
-        1. Command the drone to disarm
-        2. Transition to the DISARMING state
-        """
+      
         self.disarm()
         self.flight_state = States.DISARMING
         
         print("disarm transition")
 
     def manual_transition(self):
-        """This method is provided
-        
-        1. Release control of the drone
-        2. Stop the connection (and telemetry log)
-        3. End the mission
-        4. Transition to the MANUAL state
-        """
+      
         print("manual transition")
 
         self.release_control()
@@ -186,12 +137,7 @@ class BackyardFlyer(Drone):
         self.flight_state = States.MANUAL
 
     def start(self):
-        """This method is provided
         
-        1. Open a log file
-        2. Start the drone connection
-        3. Close the log file
-        """
         print("Creating log file")
         self.start_log("Logs", "NavLog.txt")
         print("starting connection")
